@@ -1,13 +1,15 @@
-package com.micro_ecommerce.orderservice.dto;
+package com.micro_ecommerce.inventoryservice.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Builder
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class OrderItemRequestDto {
+@NoArgsConstructor
+public class OrderRequestItemDto {
     private Long productId;
     private Integer quantity;
 
