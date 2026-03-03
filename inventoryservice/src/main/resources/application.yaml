@@ -17,7 +17,7 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 server:
   servlet:
-    context-path: /api/v1/inventory
+    context-path: /inventory
   port: 8081
 eureka:
   client:

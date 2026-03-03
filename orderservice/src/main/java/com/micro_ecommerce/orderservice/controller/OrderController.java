@@ -10,11 +10,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestParam;
-
 
 @RestController
-@RequestMapping("/orders")
+@RequestMapping("/core")
 public class OrderController {
     private final OrderService orderService;
 
@@ -26,7 +24,6 @@ public class OrderController {
     public String helloOrderService() {
         return "Hello from Order Service!";
     }
-    
 
     @GetMapping
     public ResponseEntity<List<OrderRequestDto>> getAllOrders() {

@@ -4,6 +4,10 @@ spring:
 server:
   port: 8761
 eureka:
+  instance:
+    # This ensures your Gateway has its own unique name in the dashboard
+    instance-id: ${spring.application.name}:${random.value}
+    prefer-ip-address: true
   client:
     register-with-eureka: false
     fetch-registry: false

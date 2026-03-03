@@ -31,20 +31,18 @@ public class ProductController {
         this.restClient = restClient;
     }
 
+    @GetMapping("/helloInventoryService")
+    public String helloInventoryService() {
+        ServiceInstance instance = discoveryClient.getInstances("orderservice")
+                .stream().findFirst()
+                .orElseThrow(() -> new RuntimeException("No instances of inventory-service found"));
+        String response = restClient.get()
+                .uri(instance.getUri() + "/orders/core/helloOrderService")
+                .retrieve()
+                .body(String.class);
 
-@GetMapping("/helloInventoryService")
-public String helloInventoryService() {
-    ServiceInstance instance = discoveryClient.getInstances("orderservice")
-            .stream().findFirst()
-            .orElseThrow(() -> new RuntimeException("No instances of inventory-service found"));
-       String response= restClient.get()
-            .uri(instance.getUri() + "/api/v1//orders/helloOrderService")
-            .retrieve()
-               .body(String.class);
-            
-        return "Hello from Inventory Service!"+response+" from "+instance.getUri();
+        return "Hello from Inventory Service!" + response + " from " + instance.getUri();
     }
-
 
     @GetMapping()
     public ResponseEntity<List<ProductReponseDto>> listAllProducts() {
