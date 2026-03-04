@@ -1,36 +1,7 @@
 spring:
   application:
     name: api-gateway
-
-  cloud:
-    gateway:
-      routes:
-        - id: inventory-service
-          uri: lb://inventoryservice
-          predicates:
-            - Path=/api/v1/inventory/**
-          filters:
-            - StripPrefix=2
-            - AddRequestHeader=X-Forwarded-Prefix, /api/v1
-            - name: Authentication
-              args:
-                enabled: true
-
-        - id: order-service
-          uri: lb://orderservice
-          predicates:
-            - Path=/api/v1/orders/**
-          filters:
-            - StripPrefix=2
-            - name: Authentication
-              args:
-                enabled: true
-jwt:
-  secret: UQ9IDlQ8ZZroj9jp5ZsHiSp0Puuv9sQYrobE5OgE1QUoJrtJlPv5ShGtwMPRglBI
-
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka/
-    register-with-eureka: true
-    fetch-registry: true
+  profiles:
+    active: default
+  config:
+    import: "configserver:http://localhost:8888"

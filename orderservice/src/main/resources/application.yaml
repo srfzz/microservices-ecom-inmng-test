@@ -1,62 +1,7 @@
 spring:
   application:
     name: orderservice
-  datasource:
-    url: jdbc:postgresql://localhost:5433/orders_db
-    username: postgres
-    password: password
-    driver-class-name: org.postgresql.Driver
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-management:
-  health:
-    circuitbreakers:
-      enabled: true
-  endpoints:
-    web:
-      exposure:
-        include: health,info,metrics,resilience4j,prometheus
-  endpoint:
-    health:
-      show-details: always
-  prometheus:
-    metrics:
-      export:
-        enabled: true
-server:
-  servlet:
-    context-path: /orders
-  port: 8082
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka/
-    register-with-eureka: true
-    fetch-registry: true
-resilience4j:
-  retry:
-    instances:
-      inventoryRetry:
-        max-attempts: 3
-        wait-duration: 5s
-  ratelimiter:
-    instances:
-      orderApiRateLimiter:
-        limit-for-period: 2
-        limit-refresh-period: 20s
-        timeout-duration: 2s
-  circuitbreaker:
-    instances:
-      inventoryCircuitBreaker:
-        register-health-indicator: true
-        sliding-window-size: 10
-        minimum-number-of-calls: 5
-        wait-duration-in-open-state: 10s
-        failure-rate-threshold: 50
-        permitted-number-of-calls-in-half-open-state: 3
-        event-consumer-buffer-size: 10
-        slow-call-duration-threshold: 2s
-        slow-call-rate-threshold: 50
-        automatic-transition-from-open-to-half-open-enabled: true
+  profiles:
+    active: default
+  config:
+    import: "configserver:http://localhost:8888"
