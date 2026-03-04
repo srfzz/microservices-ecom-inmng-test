@@ -13,6 +13,8 @@ import com.micro_ecommerce.orderservice.repository.OrderRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -44,7 +46,11 @@ public class OrderService {
     }
 
     @Transactional
+    @CircuitBreaker(name = "inventoryCircuitBreaker", fallbackMethod = "fallbackCreateOrder")
+    @Retry(name = "inventoryRetry", fallbackMethod = "fallbackCreateOrder")
+
     public OrderRequestDto createOrder(OrderRequestDto orderRequest) {
+        log.info("calling the create order request");
         log.info("Creating order with request: {}", orderRequest);
         double updatedStock = inventoryFeignClient.updateProductStock(orderRequest);
         // throw new UnsupportedOperationException("Unimplemented method
@@ -57,6 +63,12 @@ public class OrderService {
         order.setStatus(OrderStatus.CONFIRMED);
         OrderEntity savedOrder = orderRepository.save(order);
         return orderMapper.toOrderRequestDto(savedOrder);
+
+    }
+
+    public OrderRequestDto fallbackCreateOrder(OrderRequestDto orderRequest, Throwable throwable) {
+        log.error("Failed to create order due to: {}", throwable.getMessage());
+        return new OrderRequestDto();
 
     }
 

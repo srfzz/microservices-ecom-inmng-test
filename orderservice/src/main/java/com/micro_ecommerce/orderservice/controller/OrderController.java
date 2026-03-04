@@ -39,7 +39,13 @@ public class OrderController {
     }
 
     @PostMapping("/create-order")
+    // @RateLimiter(name = "orderApiRateLimiter", fallbackMethod =
+    // "rateLimitFallback")
     public ResponseEntity<OrderRequestDto> createOrder(@RequestBody OrderRequestDto orderRequest) {
         return ResponseEntity.ok(orderService.createOrder(orderRequest));
+    }
+
+    public ResponseEntity<OrderRequestDto> rateLimitFallback(OrderRequestDto orderRequest, Throwable throwable) {
+        return ResponseEntity.status(429).header("Retry-After", "20s").build();
     }
 }
