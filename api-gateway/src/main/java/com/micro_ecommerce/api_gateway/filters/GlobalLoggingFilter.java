@@ -16,8 +16,10 @@ public class GlobalLoggingFilter implements GlobalFilter, Ordered {
     @Override
 
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        log.info("Global filter executed for request: {}", exchange.getRequest().getURI());
-        return chain.filter(exchange);
+
+        return chain.filter(exchange).then(Mono.fromRunnable(() -> {
+            log.info("Global filter executed for requestt: {}", exchange.getRequest().getURI());
+        }));
         // throw new UnsupportedOperationException("Unimplemented method 'filter'");
     }
 

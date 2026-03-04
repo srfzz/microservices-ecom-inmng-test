@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,8 +26,9 @@ public class OrderController {
     }
 
     @GetMapping("/helloOrderService")
-    public String helloOrderService() {
-        return "Hello from Order Service!";
+    public String helloOrderService(@RequestHeader("X-User-Id") String userId,
+            @RequestHeader("X-User-Role") String userRole) {
+        return "Hello from Order Service! User ID: " + userId + ", User Role: " + userRole;
     }
 
     @GetMapping

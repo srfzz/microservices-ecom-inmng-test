@@ -1,6 +1,7 @@
 spring:
   application:
     name: api-gateway
+
   cloud:
     gateway:
       routes:
@@ -11,6 +12,9 @@ spring:
           filters:
             - StripPrefix=2
             - AddRequestHeader=X-Forwarded-Prefix, /api/v1
+            - name: Authentication
+              args:
+                enabled: true
 
         - id: order-service
           uri: lb://orderservice
@@ -18,6 +22,11 @@ spring:
             - Path=/api/v1/orders/**
           filters:
             - StripPrefix=2
+            - name: Authentication
+              args:
+                enabled: true
+jwt:
+  secret: UQ9IDlQ8ZZroj9jp5ZsHiSp0Puuv9sQYrobE5OgE1QUoJrtJlPv5ShGtwMPRglBI
 
 eureka:
   client:
