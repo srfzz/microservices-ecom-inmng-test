@@ -1,5 +1,7 @@
 {
   "java.configuration.updateBuildConfiguration": "interactive",
   "java.compile.nullAnalysis.mode": "automatic",
-  "java.project.sourcePaths": [""]
+  "java.project.sourcePaths": [
+    "config-server"
+  ]
 }
