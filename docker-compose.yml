@@ -1,0 +1,9 @@
+services:
+  # Infrastructure
+  zipkin:
+    image: openzipkin/zipkin
+    container_name: zipkin
+    ports:
+      - "9411:9411" # This is the default Zipkin port
+
+  # Your Microservices
